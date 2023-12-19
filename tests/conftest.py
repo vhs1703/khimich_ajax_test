@@ -3,11 +3,15 @@ import time
 import pytest
 from appium import webdriver
 from utils.android_utils import android_get_desired_capabilities
+from utils.logger_utils import get_logger
 
+
+logger = get_logger()
 
 
 @pytest.fixture(scope='session')
 def run_appium_server():
+    logger.info('Starting appium server')
     subprocess.Popen(
         ['appium', '-a', '0.0.0.0', '-p', '4723', '--allow-insecure', 'adb_shell'],
         stdout=subprocess.DEVNULL,
@@ -16,12 +20,6 @@ def run_appium_server():
         shell=True
     )
     time.sleep(5)
+    logger.info('Appium server started')
 
-# Замінив скоуп на function, при тестуванні логіну я думаю це опитмально
-# Хотів би отримати фідбек на скільки це правильно або можливі варіанти вирішення проблемми
-# Наприклад перевіряти авторизацію і виходити з аккаунта або при невдалій авторизації стирати поля
-@pytest.fixture(scope='function')
-def driver(run_appium_server):
-    driver = webdriver.Remote('http://127.0.0.1:4723/wd/hub',android_get_desired_capabilities())
-    yield driver
-    driver.quit()
+

@@ -5,13 +5,13 @@ import re
 # Через те що використовую re, можна розширити, в matches буде знаходитись список із всіх uid підключених
 
 
-def get_uid():
+def get_udid():
     result = subprocess.run('adb devices', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     output = result.stdout
     pattern = re.compile(r'\b(\w+)\s+device\b')
     matches = pattern.findall(output)
-    uid = matches[0] if matches else None
-    return uid
+    udid = matches[0] if matches else None
+    return udid
 
 def android_get_desired_capabilities():
     return {
@@ -24,7 +24,7 @@ def android_get_desired_capabilities():
         'resetKeyboard': True,
         'systemPort': 8301,
         'takesScreenshot': True,
-        'udid': get_uid(),
+        'udid': get_udid(),
         'appPackage': 'com.ajaxsystems',
         'appActivity': 'com.ajaxsystems.ui.activity.LauncherActivity'
 }

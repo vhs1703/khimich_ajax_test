@@ -1,6 +1,9 @@
 import pytest
 from contextlib import nullcontext as does_not_raise
+from utils.logger_utils import get_logger
 
+
+logger = get_logger()
 
 
 @pytest.mark.parametrize("login,password,expected_result,exprectation",[
@@ -12,8 +15,9 @@ from contextlib import nullcontext as does_not_raise
 ])
 
 def test_user_login(user_login_fixture,login,password,expected_result,exprectation):
-    log.info('Start test')
+    logger.info(f'Starting test\nLogin: {login}\nPassword:{password}\nExpected Result: {expected_result}')
     with exprectation:
         result = user_login_fixture.auth(login,password)
+        logger.info(f'End of test:\nResult: {result}\nExpected Result: {expected_result}')
         assert result == expected_result
 
